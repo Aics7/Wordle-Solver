@@ -2,6 +2,7 @@
 answers = []
 word = ''
 color = ''
+contains = []
 
 #prints list of words
 def printList(list_of_words):
@@ -56,7 +57,30 @@ while word != 'exit' or colors != 'exit':
     if len(word) != 5 or len(colors) != 5:
         print('Invalid length for word or colors')
         continue
-    
+
+    #Arrange them in the order green, yellow, black
+    new_word = ''
+    new_colors = ''
+    positions = []
+    for i in range(5):
+        if colors[i] == 'g':
+            new_colors += colors[i]
+            new_word += word[i]
+            positions.append(i)
+    for i in range(5):
+        if colors[i] == 'y':
+            new_colors += colors[i]
+            new_word += word[i]
+            positions.append(i)
+    for i in range(5):
+        if colors[i] == 'b':
+            new_colors += colors[i]
+            new_word += word[i]
+            positions.append(i)
+            
+    colors = new_colors
+    word = new_word
+            
     #narrows down list of words based on word typed and colors
     for i in range(len(word)):
         letter = word[i]
@@ -66,19 +90,23 @@ while word != 'exit' or colors != 'exit':
             for answer in answers:
                 if letter not in answer:
                     new_answers.append(answer)
+                elif letter in contains and answer[positions[i]] != letter:
+                    new_answers.append(answer)
             answers = new_answers
             
         elif color == 'y':
+            contains.append(letter)
             new_answers = []
             for answer in answers:
-                if letter in answer and answer[i] != letter:
+                if answer[positions[i]] != letter and letter in answer:
                     new_answers.append(answer)
             answers = new_answers
             
         elif color == 'g':
+            contains.append(letter)
             new_answers = []
             for answer in answers:
-                if answer[i] == letter:
+                if answer[positions[i]] == letter:
                     new_answers.append(answer)
             answers = new_answers
             
